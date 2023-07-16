@@ -13,6 +13,7 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [Result, setResult] = useState([]);
   const [submitted, setSubmitted] = useState(false)
+  const [length, setLength] = useState(0)
 
   const onDropAccepted = useCallback(acceptedFiles => {
     setLoading(true)
@@ -26,6 +27,7 @@ function App() {
           // Do whatever you want with the file contents
           const binaryStr = reader.result
           setResult(binaryStr)
+          setLength(JSON.parse(binaryStr).length)
           setLoading(false)
         }
         reader.readAsText(file)
@@ -40,7 +42,7 @@ function App() {
 
   const onDropRejected = useCallback(() => {
     alert.show('Please select a JSON file only!')
-  })
+  },[])
 
   const { getRootProps, getInputProps} = useDropzone({
     onDropAccepted, accept: {
@@ -52,7 +54,7 @@ function App() {
   return (
     <>
       <div className={`flex flex-col h-full w-full font-['poppins'] overflow-x-hidden`}>
-        <div className={`flex flex-col px-5 pt-16 pb-[103px] mb-5 overflow-x-hidden h-fit ${submitted ? 'pb-0' : ''}`}>
+        <div className={`flex flex-col px-5 pt-16 overflow-x-hidden h-fit ${submitted ? '' : 'pb-[103px] mb-5'}`}>
           <span className='flex flex-row items-center text-gray-700 text-xl font-semibold tracking-tighter mb-5'><Back /> Submit form</span>
           <span className='text-gray-700 text-14 tracking-tighter mb-5'>Full Name</span>
           <input placeholder='Full Name' className='rounded-10 bg-gray-100 flex w-full py-3 px-4 items-center mb-5'></input>
@@ -78,7 +80,7 @@ function App() {
         <div className={`${submitted ? '' : 'hidden'} absolute rounded-36 bg-white h-373 flex flex-col items-center w-302 justify-center top-1/4 self-center`}>
           <Success />
           <span className='text-blue-500 text-base font-semibold leading-5 tracking-tighter mb-4'>Success!</span>
-          <span className='text-black text-14 font-normal leading-5 tracking-tighter mb-4'>{Result.length} entries successfully uploaded</span>
+          <span className='text-black text-14 font-normal leading-5 tracking-tighter mb-4'>{length} entries successfully uploaded</span>
           <button onClick={hancleCancel} className='w-90 h-49 rounded-30 flex justify-center items-center bg-blue-500 text-white mb-5 cursor-pointer'>Go to my entries</button>
           <button onClick={hancleCancel} className='w-90 h-49 rounded-30 flex justify-center items-center bg-blue-100 text-blue-500 cursor-pointer'>Cancel</button>
         </div>
