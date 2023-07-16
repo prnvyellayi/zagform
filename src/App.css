@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  font-family: Poppins;
+}
+
+.submitform {
+  color: #292727;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.014px;
+}
