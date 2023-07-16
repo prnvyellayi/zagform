@@ -1,4 +1,4 @@
-import React, { useState, useCallback, arrayBuffer } from 'react';
+import React, { useState, useCallback } from 'react';
 import './App.css';
 import Back from './svg/back-icon'
 import Email from './svg/email';
@@ -14,7 +14,7 @@ function App() {
   const [Result, setResult] = useState([]);
   const [submitted, setSubmitted] = useState(false)
 
-  const onDrop = useCallback(acceptedFiles => {
+  const onDropAccepted = useCallback(acceptedFiles => {
     setLoading(true)
     setTimeout(() => {
       acceptedFiles.forEach((file) => {
@@ -33,11 +33,6 @@ function App() {
     }, 1500)
   }, [])
 
-  const handleclick = () => {
-    setSubmitted(true)
-    console.log("submitted")
-  }
-
   const hancleCancel = () => {
     setSubmitted(false)
     setResult([])
@@ -47,8 +42,8 @@ function App() {
     alert.show('Please select a JSON file only!')
   })
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop, accept: {
+  const { getRootProps, getInputProps} = useDropzone({
+    onDropAccepted, accept: {
       'application/json': ['.json'], // you need to specify into this array the extensions you want to accept
     }, maxFiles: 1,
     onDropRejected
@@ -75,17 +70,17 @@ function App() {
           </div>
         </div>
         <div className='h-103 w-full flex items-center justify-center border border-gray-300 fixed bottom-0 bg-white'>
-          <span onClick={handleclick} disabled={() => Result.length === 0 ? true : false} className={`flex w-90 h-49 rounded-30 ${Result.length === 0 ? 'bg-blue-500 bg-opacity-50' : 'bg-blue-500'} justify-center items-center text-white text-14 font-medium tracking-tighter`}>
+          <button onClick={() => setSubmitted(true)} disabled={Result.length ===0 ? true : false} className={`w-90 h-49 rounded-30 ${Result.length === 0 ? 'bg-blue-500 bg-opacity-50' : 'bg-blue-500'} text-white text-14 font-medium tracking-tighter`}>
             Submit
-          </span>
+          </button>
         </div>
         <div className={`${submitted ? '' : 'hidden'} absolute w-full h-full bg-gray-600 bg-opacity-75`}></div>
         <div className={`${submitted ? '' : 'hidden'} absolute rounded-36 bg-white h-373 flex flex-col items-center w-302 justify-center top-1/4 self-center`}>
           <Success />
           <span className='text-blue-500 text-base font-semibold leading-5 tracking-tighter mb-4'>Success!</span>
           <span className='text-black text-14 font-normal leading-5 tracking-tighter mb-4'>{Result.length} entries successfully uploaded</span>
-          <span onClick={hancleCancel} className='w-90 h-49 rounded-30 flex justify-center items-center bg-blue-500 text-white mb-5'>Go to my entries</span>
-          <span onClick={hancleCancel} className='w-90 h-49 rounded-30 flex justify-center items-center bg-blue-100 text-blue-500'>Cancel</span>
+          <button onClick={hancleCancel} className='w-90 h-49 rounded-30 flex justify-center items-center bg-blue-500 text-white mb-5 cursor-pointer'>Go to my entries</button>
+          <button onClick={hancleCancel} className='w-90 h-49 rounded-30 flex justify-center items-center bg-blue-100 text-blue-500 cursor-pointer'>Cancel</button>
         </div>
       </div>
     </>
